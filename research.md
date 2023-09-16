@@ -1,0 +1,1 @@
+`# libcamera-still -k -t 0 --rawfull --nopreview --width 4624 --height 3472 --mode 4624:3472 -o 16mp.jpg`
