@@ -1,6 +1,6 @@
-# Camera Pi
+#  DIY Camera with Raspberry Pi and GPS
 
-Goal: build a camera that can take great photos in a small form factor.
+Project Goal: Create a compact, high-performance camera using Raspberry Pi, a camera module, and GPS for exceptional photography.
 
 ##
 
