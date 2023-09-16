@@ -1,14 +1,14 @@
 import dependency_provider
 import logging
 
-logging.basicConfig(level=logging.DEBUG)
+logging.basicConfig(level=logging.INFO)
 console_handler = logging.StreamHandler()
-console_handler.setLevel(logging.DEBUG)
+console_handler.setLevel(logging.INFO)
 logging.getLogger('').addHandler(console_handler)
 
 if __name__ == '__main__':
     controller = dependency_provider.DependencyProvider()
-    logging.debug("v37")
+    logging.info("v38")
     try:
         gallery_mode = False
         gallery_image_index = -1
@@ -19,6 +19,11 @@ if __name__ == '__main__':
                     gallery_image_index = 0
                     controller.display_image(controller.get_images()[
                                              gallery_image_index])
+
+                elif lcd_key == dependency_provider.KEY_PRESS_PIN:
+                    controller.delete_image(controller.get_images()[
+                        gallery_image_index])
+                    gallery_image_index = 0
 
                 # UP and DOWN keys scoll through images
                 elif lcd_key == dependency_provider.KEY_UP_PIN or lcd_key == dependency_provider.KEY_DOWN_PIN:
@@ -38,8 +43,10 @@ if __name__ == '__main__':
                     controller.camera_start()
             else:
                 controller.camera_preview_loop()
-                if lcd_key == dependency_provider.KEY1_PIN:
+                if lcd_key == dependency_provider.KEY_PRESS_PIN:
                     controller.camera_snap()
+                elif lcd_key == dependency_provider.KEY1_PIN:
+                    controller.focus()
                 elif lcd_key == dependency_provider.KEY2_PIN:
                     controller.focus()
                 elif lcd_key == dependency_provider.KEY3_PIN:

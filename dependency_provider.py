@@ -1,7 +1,5 @@
-import io
 import os
 import LCD_1in44
-import LCD_Config
 from PIL import Image, ImageDraw
 from time import strftime, localtime, sleep
 from picamera2 import Picamera2, Preview
@@ -10,7 +8,6 @@ import time
 import atexit
 import logging
 import threading
-import shutil
 import datetime
 from pprint import pprint
 
@@ -61,7 +58,11 @@ class DependencyProvider:
         for path in paths:
             if os.path.isfile(os.path.join(self.IMAGES_PATH, path)):
                 files.append(path)
-        return files.reverse()
+        files.reverse()
+        return files
+    
+    def delete_image(self, image_path: str) -> None:
+        os.remove(image_path)
 
     def display_image(self, image_path: str) -> None:
         im = Image.open(os.path.join(self.IMAGES_PATH, image_path))
@@ -111,7 +112,7 @@ class DependencyProvider:
 
     def focus(self):
         self.cam_hardware.set_controls({"AfMode": 1, "AfTrigger": 0})
-        self.__lcd_text('focusing', None)
+        self.__lcd_text('focusing', self.current_preview_img)
         time.sleep(0.5)
 
     def camera_start(self) -> None:
@@ -197,6 +198,6 @@ class DependencyProvider:
         preview_image = self.cam_hardware.switch_mode_and_capture_array(
             self.preview_config)
         self.__lcd_text('complete', self.__preview_image(preview_image))
-        time.sleep(4)
+        time.sleep(2)
         # self.__lcd_temp_text = (datetime.datetime.now(), 'complete')
         return True
